@@ -1,30 +1,30 @@
-from pydantic import BaseModel, EmailStr, AnyUrl, Field, field_validator
-from typing import List, Dict, Optional, Annotated
+#computed field
+from pydantic import BaseModel, EmailStr, computed_field
+from typing import List, Dict
 
 class Patient(BaseModel):
     name : str
     email: EmailStr
     age : int
-    weight : float
+    weight : float #kg
+    height: float #meters
     married: bool 
     allergies: List[str]
     contact_details: Dict[str, str]
 
-    @field_validator('email')
-    @classmethod
-    def email_validator(cls, value):
-        valid_domains = ['hdfs.com', 'icic.com']
-        #abc@gmail.com
-        domain_name = value.split('@')[-1]
+    @computed_field
+    @property
+    def bmi(self) -> float:
+        bmi = round(self.weight/(self.height**2),2)
+        return bmi
 
-        if domain_name not in valid_domains:
-            raise ValueError("not a valid domain")
 
-        return value 
+
 def insert_patient_data(patient: Patient):
     print(patient.name)
     print(patient.age)
-    print("Inserted into database")        
+    print("BMi", patient.bmi)
+    print("Updated")        
 
 patient_info = {
     'name': 'roshan',
@@ -32,6 +32,7 @@ patient_info = {
     'linkedin_url': 'https://linkedin.com/in/roshan',
     'age': 120,
     'weight': 75.3,
+    'height': 1.72, 
     'married': True,
     'allergies': ['pollen', 'dust'],
     'contact_details': {
@@ -40,4 +41,4 @@ patient_info = {
 }
 
 patient1 = Patient(**patient_info)
-insert_patient_data(patient1)       
+insert_patient_data(patient1)             
