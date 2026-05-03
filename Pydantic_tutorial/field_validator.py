@@ -21,6 +21,11 @@ class Patient(BaseModel):
             raise ValueError("not a valid domain")
 
         return value 
+
+    @field_validator('name', mode = after) #default value is afete
+    @classmethod
+    def transform_name(cls, value):
+        return value.upper()    
 def insert_patient_data(patient: Patient):
     print(patient.name)
     print(patient.age)

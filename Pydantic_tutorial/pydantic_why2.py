@@ -1,13 +1,16 @@
 from pydantic import BaseModel, EmailStr, AnyUrl, Field
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Annotated
 
 
 class Patient(BaseModel):
-    name: str  =Field(max_length=50)
+    name: Annotated[str, Field(max_length=50, tittle = 'Name of the patient',
+    description ='Give the name of the patient in less than 50 chars', examples =['Nitish', 'Amit'])] #data validation and meta data attach  
     email: EmailStr
     linkedin_url: AnyUrl
-    age: int = Field(gt =0 , lt=120)
-    weight: float = Field(gt=0) # gt is greater than , it use to validate: 
+    age: int = Field(gt =0 , lt=100)
+    weight: Annotated[float , Field(gt=0, strict = True)]
+    #here strict is used to get the exact data type, cause pydantic , easily 
+    # conver the string num into int, so for the restrict we use strict # gt is greater than , it use to validate: 
     married: bool
     allergies: Optional[list[str]] = None
     contact_details: dict[str, str]

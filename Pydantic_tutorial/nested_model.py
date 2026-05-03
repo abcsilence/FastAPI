@@ -24,3 +24,14 @@ print(patient1)
 print(patient1.name)
 print(patient1.address.city)
 print(patient1.address.pin)
+
+
+
+#better organization of related data(eg, vitals, address)
+
+
+#Reausibility: Use Vitals in multiple models(eg, patient, medical record)
+
+#Readability : Easier for developers and API consumers to understand 
+
+#validation : Nested models are validated automatically-no extra work needed  
